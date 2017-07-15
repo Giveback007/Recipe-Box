@@ -17,5 +17,13 @@
   "license": "MIT",
   "description": "This project was bootstrapped with [Create React App](https://github.com/facebookincubator/create-react-app).",
   "devDependencies": {},
-  "author": ""
+  "author": "",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Giveback007/recipe-box.git"
+  },
+  "bugs": {
+    "url": "https://github.com/Giveback007/recipe-box/issues"
+  },
+  "homepage": "https://github.com/Giveback007/recipe-box#readme"
 }
