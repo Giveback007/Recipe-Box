@@ -82,6 +82,7 @@ var Main = function (_React$Component) {
     };_this.removeRecepie = _this.removeRecepie.bind(_this);
     _this.handleChange = _this.handleChange.bind(_this);
     _this.addRecepies = _this.addRecepies.bind(_this);
+    _this.removeIngredient = _this.removeIngredient.bind(_this);
     return _this;
   }
   // </removeRecepie>
@@ -104,8 +105,9 @@ var Main = function (_React$Component) {
     key: 'removeIngredient',
     value: function removeIngredient(ob, item) {
       var tempArr = this.state.recepies;
-      tempArr.ingredients;
-      // this.setState({})
+      console.log(tempArr[ob].ingredients);
+      tempArr[ob].ingredients.splice(item, 1);
+      this.setState({ recepies: tempArr });
     }
     // </addRecepies>
 
@@ -139,13 +141,15 @@ var Main = function (_React$Component) {
       var mapedRecepies = this.state.recepies.map(function (x, i) {
         return React.createElement(Recepie, { key: i, num: i, onClick: function onClick() {
             return _this2.removeRecepie(i);
-          }, name: x.name, ingredients: x.ingredients.map(function (x, i) {
+          }, name: x.name, ingredients: x.ingredients.map(function (x, j) {
             return React.createElement(
               'li',
               null,
               React.createElement(
                 'button',
-                { className: 'recepie-remove-ingr' },
+                { className: 'recepie-remove-ingr', onClick: function onClick() {
+                    return _this2.removeIngredient(i, j);
+                  } },
                 'x'
               ),
               ' ',

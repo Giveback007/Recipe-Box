@@ -48,6 +48,7 @@ class Main extends React.Component {
     this.removeRecepie = this.removeRecepie.bind(this);
     this.handleChange = this.handleChange.bind(this);
     this.addRecepies = this.addRecepies.bind(this);
+    this.removeIngredient = this.removeIngredient.bind(this);
   }
   // </removeRecepie>
   removeRecepie(x) {
@@ -60,8 +61,9 @@ class Main extends React.Component {
   // </removeIngredient>
   removeIngredient(ob, item) {
     var tempArr = this.state.recepies;
-    tempArr.ingredients
-    // this.setState({})
+    console.log(tempArr[ob].ingredients);
+    tempArr[ob].ingredients.splice(item, 1);
+    this.setState({recepies: tempArr})
   }
   // </addRecepies>
   addRecepies() {
@@ -83,7 +85,7 @@ class Main extends React.Component {
 
     var mapedRecepies = this.state.recepies.map(
       (x, i) => <Recepie key={i} num={i} onClick={() => this.removeRecepie(i)} name={x.name} ingredients={
-        x.ingredients.map((x ,i) => <li><button className='recepie-remove-ingr' >x</button> {x}</li>)
+        x.ingredients.map((x ,j) => <li><button className='recepie-remove-ingr' onClick={() => this.removeIngredient(i, j)}>x</button> {x}</li>)
       }/>
     )
     return(
