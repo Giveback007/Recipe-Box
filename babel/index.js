@@ -1,37 +1,54 @@
 var foodDefaultUrl = '/assets/food-default.jpeg';
-var recepiesPreMade = [
+var recipesPreMade = [
+  {
+    'name': 'Roasted Chicken',
+    'ingredients': ['blah blah', 'stuff', 'more stuff'],
+    'img': '/assets/roasted-chicken.jpg'
+  },
   {
     'name': 'Pumkin Pie',
-    'ingredients': ['blah blah', 'stuff', 'more stuff'],
-    'img': foodDefaultUrl
-  },
-  {
-    'name': 'Chocolate Cake',
     'ingredients': ['blah bluh', 'damb it', 'less stuff'],
-    'img': foodDefaultUrl
+    'img': '/assets/pumkin-pie.jpg'
   },
   {
-    'name': 'Smoothie',
+    'name': 'Grilled Cheese Sandwich',
     'ingredients': ['could you blah', 'stuffiness', 'more stuffiness'],
-    'img': foodDefaultUrl
+    'img': '/assets/grilled-cheese-sandwich.jpg'
   }
 ];
 
 localStorage.clear();
 
-function Recepie(props) {
+function Outer(props) {
+  return <div className="focus-out" onClick={props.onClick} style={ props.onOff ? {} : {display: 'none'} }/>
+}
+
+function Focused(props) {
+  var ingrList = props.ingredients.map(
+    (x, i) => <li key={i} contentEditable={ props.editable ? 'true' : 'false'} style={{ background: props.editable ? 'white' : '' }}>{x}</li>
+  );
+  return(
+    <div className="focused-main" style={ props.onOff ? {} : {display: 'none'} }>
+      <h2>{props.name}</h2>
+      <ul>{ingrList}</ul>
+      <button onClick={props.edit} style={{width: '60px'}}>{props.editable ? 'Save' : 'Edit'}</button>
+      <button onClick={props.done}>Done</button>
+    </div>
+  );
+}
+
+function Recipe(props) {
     return(
-      <div className='recepie'>
-        <h1 className="recepie-name">{props.name}</h1>
-        <div>
-          <ul className="recepie-ingredients">
-            {props.ingredients}
-            <li style={{display: 'flex'}}><button>+</button><input style={{width: '85%'}} placeholder="add ingredient"/></li>
-          </ul>
-          <button className="btn delete" onClick={props.onClick}>Delete</button>
-          <button>Edit</button>
+      <a href="javascript:void(0);" onClick={props.focusOn}>
+        <div className='recipe'>
+          <button onClick={props.delete}>X</button>
+          <h3 className="recipe-name">{props.name}</h3>
+          <div>
+            <img className='recipe-img' src={props.img}/>
+            <h5>Ingredients: {props.ingredientsNum}</h5>
+          </div>
         </div>
-      </div>
+      </a>
     );
 }
 
@@ -40,60 +57,47 @@ class Main extends React.Component {
     super(props);
     // </state>
     this.state = {
-      recepies: localStorage['recepies'] === undefined ?
-    recepiesPreMade : JSON.parse(localStorage['recepies']),
-      nameInput: ''
+      recipes: localStorage['recipes'] === undefined ?
+    recipesPreMade : JSON.parse(localStorage['recipes']),
+      focused: false,
+      focusedRecipeNum: 0,
+      editable: false
     }
     // </bind>
-    this.removeRecepie = this.removeRecepie.bind(this);
-    this.handleChange = this.handleChange.bind(this);
-    this.addRecepies = this.addRecepies.bind(this);
-    this.removeIngredient = this.removeIngredient.bind(this);
+    this.focusOn = this.focusOn.bind(this);
+    this.toggleEdit = this.toggleEdit.bind(this);
+    this.toggleFocus = this.toggleFocus.bind(this);
   }
-  // </removeRecepie>
-  removeRecepie(x) {
-    var temp = this.state.recepies;
-    delete temp[x];
-    temp = temp.filter(x => x !== undefined);
-    console.log(temp);
-    this.setState({ recepies: temp });
-  }
-  // </removeIngredient>
-  removeIngredient(ob, item) {
-    var tempArr = this.state.recepies;
-    console.log(tempArr[ob].ingredients);
-    tempArr[ob].ingredients.splice(item, 1);
-    this.setState({recepies: tempArr})
-  }
-  // </addRecepies>
-  addRecepies() {
-    var tempArr = this.state.recepies;
-    tempArr.push({
-       name: this.state.nameInput,
-       ingredients: [],
-       img: foodDefaultUrl
-     })
-    this.setState({recepies:  tempArr, nameInput: ''});
-  }
-  // </handleChange>
-  handleChange(x) {
-    this.setState({nameInput: x.target.value,})
-  }
-  // </render>
-  render() {
-    localStorage.setItem('recepies', JSON.stringify(this.state.recepies));
 
-    var mapedRecepies = this.state.recepies.map(
-      (x, i) => <Recepie key={i} num={i} onClick={() => this.removeRecepie(i)} name={x.name} ingredients={
-        x.ingredients.map((x ,j) => <li><button className='recepie-remove-ingr' onClick={() => this.removeIngredient(i, j)}>x</button> {x}</li>)
-      }/>
-    )
+  focusOn(num) {
+    this.setState({ focused: true, focusedRecipeNum: num });
+  }
+
+  toggleEdit() {
+    this.setState({ editable: !this.state.editable })
+  }
+
+  toggleFocus() {
+    this.setState({ focused: !this.state.focused })
+  }
+
+  render() {
+    var objNum = this.state.focusedRecipeNum;
+
+    var mapedRecepies = this.state.recipes.map((x, i) => <Recipe focusOn={() => this.focusOn(i)} name={x.name} img={x.img}/>);
     return(
-      <section>
-        <div className="main">{mapedRecepies}</div>
-        <input value={this.state.nameInput} onChange={this.handleChange}/>
-        <button onClick={this.addRecepies}>Add Recepie</button>
-      </section>
+      <section className="main">
+      {mapedRecepies}
+      <Focused
+        name={this.state.recipes[objNum].name}
+        ingredients={this.state.recipes[objNum].ingredients}
+        edit={this.toggleEdit}
+        editable={this.state.editable}
+        onOff={this.state.focused}
+        done={this.toggleFocus}
+      />
+      <Outer onClick={this.toggleFocus} onOff={this.state.focused}/>
+    </section>
     );
   }
 }

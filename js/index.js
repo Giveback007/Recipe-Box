@@ -9,58 +9,87 @@ function _possibleConstructorReturn(self, call) { if (!self) { throw new Referen
 function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
 
 var foodDefaultUrl = '/assets/food-default.jpeg';
-var recepiesPreMade = [{
-  'name': 'Pumkin Pie',
+var recipesPreMade = [{
+  'name': 'Roasted Chicken',
   'ingredients': ['blah blah', 'stuff', 'more stuff'],
-  'img': foodDefaultUrl
+  'img': '/assets/roasted-chicken.jpg'
 }, {
-  'name': 'Chocolate Cake',
+  'name': 'Pumkin Pie',
   'ingredients': ['blah bluh', 'damb it', 'less stuff'],
-  'img': foodDefaultUrl
+  'img': '/assets/pumkin-pie.jpg'
 }, {
-  'name': 'Smoothie',
+  'name': 'Grilled Cheese Sandwich',
   'ingredients': ['could you blah', 'stuffiness', 'more stuffiness'],
-  'img': foodDefaultUrl
+  'img': '/assets/grilled-cheese-sandwich.jpg'
 }];
 
 localStorage.clear();
 
-function Recepie(props) {
+function Outer(props) {
+  return React.createElement('div', { className: 'focus-out', onClick: props.onClick, style: props.onOff ? {} : { display: 'none' } });
+}
+
+function Focused(props) {
+  var ingrList = props.ingredients.map(function (x, i) {
+    return React.createElement(
+      'li',
+      { key: i, contentEditable: props.editable ? 'true' : 'false', style: { background: props.editable ? 'white' : '' } },
+      x
+    );
+  });
   return React.createElement(
     'div',
-    { className: 'recepie' },
+    { className: 'focused-main', style: props.onOff ? {} : { display: 'none' } },
     React.createElement(
-      'h1',
-      { className: 'recepie-name' },
+      'h2',
+      null,
       props.name
     ),
     React.createElement(
-      'div',
+      'ul',
       null,
-      React.createElement(
-        'ul',
-        { className: 'recepie-ingredients' },
-        props.ingredients,
-        React.createElement(
-          'li',
-          { style: { display: 'flex' } },
-          React.createElement(
-            'button',
-            null,
-            '+'
-          ),
-          React.createElement('input', { style: { width: '85%' }, placeholder: 'add ingredient' })
-        )
-      ),
+      ingrList
+    ),
+    React.createElement(
+      'button',
+      { onClick: props.edit, style: { width: '60px' } },
+      props.editable ? 'Save' : 'Edit'
+    ),
+    React.createElement(
+      'button',
+      { onClick: props.done },
+      'Done'
+    )
+  );
+}
+
+function Recipe(props) {
+  return React.createElement(
+    'a',
+    { href: 'javascript:void(0);', onClick: props.focusOn },
+    React.createElement(
+      'div',
+      { className: 'recipe' },
       React.createElement(
         'button',
-        { className: 'btn delete', onClick: props.onClick },
-        'Delete'
+        { onClick: props.delete },
+        'X'
       ),
       React.createElement(
-        'button',
+        'h3',
+        { className: 'recipe-name' },
+        props.name
+      ),
+      React.createElement(
+        'div',
         null,
-        'Edit'
+        React.createElement('img', { className: 'recipe-img', src: props.img }),
+        React.createElement(
+          'h5',
+          null,
+          'Ingredients: ',
+          props.ingredientsNum
+        )
       )
     )
   );
@@ -76,101 +105,57 @@ var Main = function (_React$Component) {
     var _this = _possibleConstructorReturn(this, (Main.__proto__ || Object.getPrototypeOf(Main)).call(this, props));
 
     _this.state = {
-      recepies: localStorage['recepies'] === undefined ? recepiesPreMade : JSON.parse(localStorage['recepies']),
-      nameInput: ''
+      recipes: localStorage['recipes'] === undefined ? recipesPreMade : JSON.parse(localStorage['recipes']),
+      focused: false,
+      focusedRecipeNum: 0,
+      editable: false
       // </bind>
-    };_this.removeRecepie = _this.removeRecepie.bind(_this);
-    _this.handleChange = _this.handleChange.bind(_this);
-    _this.addRecepies = _this.addRecepies.bind(_this);
-    _this.removeIngredient = _this.removeIngredient.bind(_this);
+    };_this.focusOn = _this.focusOn.bind(_this);
+    _this.toggleEdit = _this.toggleEdit.bind(_this);
+    _this.toggleFocus = _this.toggleFocus.bind(_this);
     return _this;
   }
-  // </removeRecepie>
-
 
   _createClass(Main, [{
-    key: 'removeRecepie',
-    value: function removeRecepie(x) {
-      var temp = this.state.recepies;
-      delete temp[x];
-      temp = temp.filter(function (x) {
-        return x !== undefined;
-      });
-      console.log(temp);
-      this.setState({ recepies: temp });
+    key: 'focusOn',
+    value: function focusOn(num) {
+      this.setState({ focused: true, focusedRecipeNum: num });
     }
-    // </removeIngredient>
-
   }, {
-    key: 'removeIngredient',
-    value: function removeIngredient(ob, item) {
-      var tempArr = this.state.recepies;
-      console.log(tempArr[ob].ingredients);
-      tempArr[ob].ingredients.splice(item, 1);
-      this.setState({ recepies: tempArr });
+    key: 'toggleEdit',
+    value: function toggleEdit() {
+      this.setState({ editable: !this.state.editable });
     }
-    // </addRecepies>
-
   }, {
-    key: 'addRecepies',
-    value: function addRecepies() {
-      var tempArr = this.state.recepies;
-      tempArr.push({
-        name: this.state.nameInput,
-        ingredients: [],
-        img: foodDefaultUrl
-      });
-      this.setState({ recepies: tempArr, nameInput: '' });
+    key: 'toggleFocus',
+    value: function toggleFocus() {
+      this.setState({ focused: !this.state.focused });
     }
-    // </handleChange>
-
-  }, {
-    key: 'handleChange',
-    value: function handleChange(x) {
-      this.setState({ nameInput: x.target.value });
-    }
-    // </render>
-
   }, {
     key: 'render',
     value: function render() {
       var _this2 = this;
 
-      localStorage.setItem('recepies', JSON.stringify(this.state.recepies));
+      var objNum = this.state.focusedRecipeNum;
 
-      var mapedRecepies = this.state.recepies.map(function (x, i) {
-        return React.createElement(Recepie, { key: i, num: i, onClick: function onClick() {
-            return _this2.removeRecepie(i);
-          }, name: x.name, ingredients: x.ingredients.map(function (x, j) {
-            return React.createElement(
-              'li',
-              null,
-              React.createElement(
-                'button',
-                { className: 'recepie-remove-ingr', onClick: function onClick() {
-                    return _this2.removeIngredient(i, j);
-                  } },
-                'x'
-              ),
-              ' ',
-              x
-            );
-          }) });
+      var mapedRecepies = this.state.recipes.map(function (x, i) {
+        return React.createElement(Recipe, { focusOn: function focusOn() {
+            return _this2.focusOn(i);
+          }, name: x.name, img: x.img });
       });
       return React.createElement(
         'section',
-        null,
-        React.createElement(
-          'div',
-          { className: 'main' },
-          mapedRecepies
-        ),
-        React.createElement('input', { value: this.state.nameInput, onChange: this.handleChange }),
-        React.createElement(
-          'button',
-          { onClick: this.addRecepies },
-          'Add Recepie'
-        )
+        { className: 'main' },
+        mapedRecepies,
+        React.createElement(Focused, {
+          name: this.state.recipes[objNum].name,
+          ingredients: this.state.recipes[objNum].ingredients,
+          edit: this.toggleEdit,
+          editable: this.state.editable,
+          onOff: this.state.focused,
+          done: this.toggleFocus
+        }),
+        React.createElement(Outer, { onClick: this.toggleFocus, onOff: this.state.focused })
       );
     }
   }]);
