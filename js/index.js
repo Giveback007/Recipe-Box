@@ -9,19 +9,19 @@ function _possibleConstructorReturn(self, call) { if (!self) { throw new Referen
 function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
 
 var editableColor = 'white';
-var foodDefaultUrl = '/assets/food-default.jpeg';
+var foodDefaultUrl = 'https://s3-us-west-2.amazonaws.com/s.cdpn.io/1134440/food-default.jpeg';
 var recipesPreMade = [{
   'name': 'Roasted Chicken',
   'ingredients': ['blah blah', 'stuff', 'more stuff'],
-  'img': '/assets/roasted-chicken.jpg'
+  'img': 'https://s3-us-west-2.amazonaws.com/s.cdpn.io/1134440/roasted-chicken2.jpg'
 }, {
   'name': 'Pumkin Pie',
   'ingredients': ['blah bluh', 'damb it', 'less stuff'],
-  'img': '/assets/pumkin-pie.jpg'
+  'img': 'https://s3-us-west-2.amazonaws.com/s.cdpn.io/1134440/pumkin-pie.jpg'
 }, {
   'name': 'Grilled Cheese Sandwich',
   'ingredients': ['could you blah', 'stuffiness', 'more stuffiness'],
-  'img': '/assets/grilled-cheese-sandwich.jpg'
+  'img': 'https://s3-us-west-2.amazonaws.com/s.cdpn.io/1134440/grilled-cheese-sandwich2.jpg'
 }];
 
 localStorage.clear(); // remove this
@@ -150,14 +150,14 @@ var Focused = function (_React$Component) {
         ),
         React.createElement(
           'div',
-          { style: { display: 'flex' } },
+          { className: 'img-url-parrent' },
           React.createElement(
-            'span',
+            'h5',
             null,
             'Img Url: '
           ),
           React.createElement(
-            'span',
+            'div',
             {
               id: 'imgUrl',
               contentEditable: this.state.editable ? 'true' : 'false',
@@ -167,19 +167,23 @@ var Focused = function (_React$Component) {
           )
         ),
         React.createElement(
-          'button',
-          { onClick: this.toggleEdit, style: { width: '60px' } },
-          this.state.editable ? 'Save' : 'Edit'
-        ),
-        React.createElement(
-          'button',
-          { onClick: this.done },
-          'Done'
-        ),
-        React.createElement(
-          'button',
-          { onClick: this.delete },
-          'Delete'
+          'div',
+          { className: 'bottom-btns' },
+          React.createElement(
+            'button',
+            { onClick: this.toggleEdit, style: { width: '60px' } },
+            this.state.editable ? 'Save' : 'Edit'
+          ),
+          React.createElement(
+            'button',
+            { onClick: this.done },
+            'Done'
+          ),
+          React.createElement(
+            'button',
+            { onClick: this.delete },
+            'Delete'
+          )
         )
       );
     }
@@ -239,7 +243,7 @@ var Recipe = function (_React$Component2) {
               'div',
               null,
               React.createElement('i', { className: 'fa fa-pencil-square-o fontawesome', 'aria-hidden': 'true', style: this.state.hover ? {} : { display: 'none' } }),
-              React.createElement('img', { src: this.props.img, style: this.state.hover ? { opacity: '0.75' } : {} }),
+              React.createElement('img', { src: this.props.img }),
               React.createElement(
                 'h5',
                 null,
@@ -316,7 +320,7 @@ var Main = function (_React$Component3) {
     value: function newRecipe() {
       var tempRecipes = this.state.recipes;
       tempRecipes.push({
-        name: 'Recipe', ingredients: [''], img: foodDefaultUrl
+        name: 'Recipe', ingredients: ['', '', ''], img: foodDefaultUrl
       });
       this.setState({
         recipes: tempRecipes,

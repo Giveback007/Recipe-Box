@@ -86,29 +86,51 @@ a {
 .focused-main {
   z-index: 100;
   background: lightblue;
-  padding: 15px;
+  padding: 15px 15px 7px 15px;
   border: solid;
+  border-radius: 10px;
   min-height: 300px;
-  width: 300px;
+  max-width: 350px;
   position: fixed;
   left: 0;
   right: 0;
   margin: auto; }
-  .focused-main #imgUrl {
+  .focused-main h2 {
+    margin: 5px;
+    text-align: center;
+    padding: 5px;
+    border-radius: 15px; }
+  .focused-main .img-url-parrent h5 {
+    margin: 0; }
+  .focused-main .img-url-parrent #imgUrl {
     -webkit-box-flex: 1;
     -webkit-flex: 1;
     -ms-flex: 1;
     flex: 1;
-    overflow: hidden; }
-  .focused-main ul {
-    padding: 0; }
-  .focused-main li {
-    margin: 7px;
-    padding-left: 5px;
+    overflow: hidden;
+    padding: 5px; }
+  .focused-main button {
+    border-radius: 7px;
+    margin: 2px; }
+  .focused-main .bottom-btns {
+    margin: 12px 0 0 0;
     display: -webkit-box;
     display: -webkit-flex;
     display: -ms-flexbox;
-    display: flex; }
+    display: flex;
+    -webkit-box-pack: justify;
+    -webkit-justify-content: space-between;
+    -ms-flex-pack: justify;
+    justify-content: space-between; }
+  .focused-main ul {
+    padding: 0; }
+  .focused-main li {
+    margin: 5px;
+    display: -webkit-box;
+    display: -webkit-flex;
+    display: -ms-flexbox;
+    display: flex;
+    list-style: decimal; }
     .focused-main li input {
       -webkit-box-flex: 1;
       -webkit-flex: 1;
@@ -117,6 +139,7 @@ a {
       margin-left: 5px; }
     .focused-main li .ingrd {
       margin-left: 5px;
+      padding: 3.5px;
       -webkit-box-flex: 1;
       -webkit-flex: 1;
       -ms-flex: 1;

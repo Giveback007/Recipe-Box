@@ -1,20 +1,20 @@
 var editableColor = 'white';
-var foodDefaultUrl = '/assets/food-default.jpeg';
+var foodDefaultUrl = 'https://s3-us-west-2.amazonaws.com/s.cdpn.io/1134440/food-default.jpeg';
 var recipesPreMade = [
   {
     'name': 'Roasted Chicken',
     'ingredients': ['blah blah', 'stuff', 'more stuff'],
-    'img': '/assets/roasted-chicken.jpg'
+    'img': 'https://s3-us-west-2.amazonaws.com/s.cdpn.io/1134440/roasted-chicken2.jpg'
   },
   {
     'name': 'Pumkin Pie',
     'ingredients': ['blah bluh', 'damb it', 'less stuff'],
-    'img': '/assets/pumkin-pie.jpg'
+    'img': 'https://s3-us-west-2.amazonaws.com/s.cdpn.io/1134440/pumkin-pie.jpg'
   },
   {
     'name': 'Grilled Cheese Sandwich',
     'ingredients': ['could you blah', 'stuffiness', 'more stuffiness'],
-    'img': '/assets/grilled-cheese-sandwich.jpg'
+    'img': 'https://s3-us-west-2.amazonaws.com/s.cdpn.io/1134440/grilled-cheese-sandwich2.jpg'
   }
 ];
 
@@ -105,18 +105,21 @@ class Focused extends React.Component {
           {ingrList}
           {this.state.editable ? <button onClick={this.addIngrd}>add ingredients</button> : null}
         </ul>
-        <div style={{display: 'flex'}}>
-          <span>Img Url: </span>
-          <span
+        <div className='img-url-parrent'>
+          <h5>Img Url: </h5>
+          <div
             id='imgUrl'
             contentEditable={ this.state.editable ? 'true' : 'false'}
             style={{ background: this.state.editable ? editableColor : '' }}
             >{this.state.img}
-          </span>
+          </div>
         </div>
-        <button onClick={this.toggleEdit} style={{width: '60px'}}>{this.state.editable ? 'Save' : 'Edit'}</button>
-        <button onClick={this.done}>Done</button>
-        <button onClick={this.delete}>Delete</button>
+
+        <div className='bottom-btns'>
+          <button onClick={this.toggleEdit} style={{width: '60px'}}>{this.state.editable ? 'Save' : 'Edit'}</button>
+          <button onClick={this.done}>Done</button>
+          <button onClick={this.delete}>Delete</button>
+        </div>
       </div>
     );
   }
@@ -146,7 +149,7 @@ class Recipe extends React.Component {
 
             <div>
               <i className="fa fa-pencil-square-o fontawesome" aria-hidden="true" style={this.state.hover ? {} : {display: 'none'}}></i>
-              <img src={this.props.img} style={this.state.hover ? {opacity: '0.75'} : {}}/>
+              <img src={this.props.img}/>
               <h5>{this.props.ingredientsNum} Ingredients</h5>
             </div>
           </div>
@@ -206,7 +209,7 @@ class Main extends React.Component {
   newRecipe() {
     var tempRecipes = this.state.recipes;
     tempRecipes.push({
-      name: 'Recipe', ingredients: [''], img: foodDefaultUrl
+      name: 'Recipe', ingredients: ['', '', ''], img: foodDefaultUrl
     });
     this.setState({
       recipes: tempRecipes,
