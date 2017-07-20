@@ -1,9 +1,13 @@
 *
  box-sizing: border-box
+ // border: solid
 
 body
-  max-width: 1000px
+  max-width: 1200px
   margin: auto
+
+h1
+  text-align: center
 
 a
   color: inherit
@@ -13,51 +17,88 @@ a
   margin: auto
 
 .main
-  max-width: 900px
   display: flex
+  justify-content: space-around
   flex-wrap: wrap
 
 .recipe
-  box-sizing: border-box
   border: solid red
   margin: 10px
   width: 250px
-  padding: 8px
+  height: 250px
+  position: relative
+  .recipe-name
+    font-size: 22px
+    text-align: center
+    margin: 15px 0 5px 0
+    white-space: nowrap
+    overflow: hidden
+    text-overflow: ellipsis
+    height: 40px
+  .fontawesome
+    position: absolute
+    color: white
+    text-shadow: 0 0 2px black
+    font-size: 50px
+    margin: 10% 
+  img
+    object-fit: cover
+    object-position: center
+    height: 125px
+    width: 100%
+  h5
+    text-align: center
 
-.recipe-name
-  font-size: 25px
-  text-align: center
-  margin: 15px 0 20px 0
+@media screen and (max-width: 750px)
+  .recipe
+    width: 155px
+    height: 130px
+    img
+      object-fit: cover
+      object-position: center
+      height: 65px
+      width: 100%
+    h5
+      display: none
 
-.recipe-img
-  object-fit: cover
-  object-position: center
-  height: 150px
-  width: 100%
+.recipe-del-btn
+  position: relative
+  top: -50px
+  margin-bottom: -50px
+  right: -50%
+  transform: translate(-50%, 0)
+  width: 100px
 
 .focused-main
   z-index: 100
   background: lightblue
   padding: 15px
   border: solid
-  height: 300px
+  min-height: 300px
   width: 300px
-  position: absolute
-  top: 0
+  position: fixed
   left: 0
   right: 0
-  bottom: 0
   margin: auto
+  #imgUrl
+    flex: 1
+    overflow: hidden
   ul
     padding: 0
   li
-    margin: 5px 0
-    list-style: none
-    padding-left: 0
+    margin: 7px
+    padding-left: 5px
+    display: flex
+    input
+      flex: 1
+      margin-left: 5px
+    .ingrd
+      margin-left: 5px
+      flex: 1
 
 .focus-out
   z-index: 99
-  position: absolute
+  position: fixed
   background: grey
   opacity: 0.5
   width: 100%
