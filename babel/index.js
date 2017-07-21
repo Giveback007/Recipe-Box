@@ -1,24 +1,24 @@
-var editableColor = 'white';
+var editableColor = '#D9DADC';
 var foodDefaultUrl = 'https://s3-us-west-2.amazonaws.com/s.cdpn.io/1134440/food-default.jpeg';
 var recipesPreMade = [
   {
     'name': 'Roasted Chicken',
-    'ingredients': ['blah blah', 'stuff', 'more stuff'],
+    'ingredients': ['roasting chicken', '2 tspns of olive oil', '3/4 tspns of salt', '1/4 tspns of black pepper', '2 garlic cloves', '1 lemon' ],
     'img': 'https://s3-us-west-2.amazonaws.com/s.cdpn.io/1134440/roasted-chicken2.jpg'
   },
   {
-    'name': 'Pumkin Pie',
-    'ingredients': ['blah bluh', 'damb it', 'less stuff'],
+    'name': 'Pumpkin Pie',
+    'ingredients': ['pie crust', '2 eggs', '1/3 cup of vegetable oil', '1/2 cup of sugar', '1 cup of flour', '1 can of pumpkin'],
     'img': 'https://s3-us-west-2.amazonaws.com/s.cdpn.io/1134440/pumkin-pie.jpg'
   },
   {
     'name': 'Grilled Cheese Sandwich',
-    'ingredients': ['could you blah', 'stuffiness', 'more stuffiness'],
+    'ingredients': ['bread', 'cheese', '1 tbls of butter'],
     'img': 'https://s3-us-west-2.amazonaws.com/s.cdpn.io/1134440/grilled-cheese-sandwich2.jpg'
   }
 ];
 
-localStorage.clear(); // remove this
+// localStorage.clear(); // remove this
 
 function Outer(props) {
   return <div className="focus-out" onClick={props.onClick} style={ props.onOff ? {} : {display: 'none'} }/>
@@ -37,6 +37,8 @@ class Focused extends React.Component {
     this.removeIngrd = this.removeIngrd.bind(this);
     this.addIngrd = this.addIngrd.bind(this);
     this.saveRecipe = this.saveRecipe.bind(this);
+    this.done = this.done.bind(this);
+    this.delete = this.delete.bind(this);
   }
 
   toggleEdit() {
@@ -71,12 +73,12 @@ class Focused extends React.Component {
     this.props.update(focusedName, tempIngrdArr, img);
   }
 
-  done = () => {
+  done() {
     this.saveRecipe();
     this.props.done();
   };
 
-  delete = () => {
+  delete() {
     this.props.delete();
     this.props.done();
   }
@@ -85,13 +87,13 @@ class Focused extends React.Component {
     var ingrList = this.state.ingredients.map((x, i) => {
       return(
         <li key={i} className='ingrd-parent'>
-          <button style={this.state.editable ? {} : {display: 'none'}} onClick={() => this.removeIngrd(i)}>x</button>
           <span
             contentEditable={ this.state.editable ? 'true' : 'false'}
             style={{ background: this.state.editable ? editableColor : '' }}
             className='ingrd'
             >{x}
           </span>
+          <button className='focused-remove-ingrd' style={this.state.editable ? {} : {display: 'none'}} onClick={() => this.removeIngrd(i)}>x</button>
         </li>);
     });
 
@@ -101,24 +103,23 @@ class Focused extends React.Component {
           id='focused-name'
           contentEditable={ this.state.editable ? 'true' : 'false'}
           style={{ background: this.state.editable ? editableColor : '' }}>{this.state.name}</h2>
+          <div className='focused-edit'><button onClick={this.toggleEdit}>{this.state.editable ? 'Save' : 'Edit'}</button></div>
         <ul>
           {ingrList}
-          {this.state.editable ? <button onClick={this.addIngrd}>add ingredients</button> : null}
+          {this.state.editable ? <div className='focused-add-ingrd'><button onClick={this.addIngrd}><i className="fa fa-plus" aria-hidden="true"/> <i className="fa fa-list-ul" aria-hidden="true"/></button></div> : null}
         </ul>
-        <div className='img-url-parrent'>
-          <h5>Img Url: </h5>
+        <div className='img-url-parrent' style={this.state.editable ? {} : {display: 'none'}}>
+          <h5>Img: </h5>
           <div
             id='imgUrl'
             contentEditable={ this.state.editable ? 'true' : 'false'}
-            style={{ background: this.state.editable ? editableColor : '' }}
+            style={this.state.editable ? { background: editableColor } : {}}
             >{this.state.img}
           </div>
         </div>
-
         <div className='bottom-btns'>
-          <button onClick={this.toggleEdit} style={{width: '60px'}}>{this.state.editable ? 'Save' : 'Edit'}</button>
-          <button onClick={this.done}>Done</button>
-          <button onClick={this.delete}>Delete</button>
+          <button className='focused-done' onClick={this.done}>Done</button>
+          <button className='focused-delete' onClick={this.delete}>Delete</button>
         </div>
       </div>
     );
@@ -150,8 +151,8 @@ class Recipe extends React.Component {
             <div>
               <i className="fa fa-pencil-square-o fontawesome" aria-hidden="true" style={this.state.hover ? {} : {display: 'none'}}></i>
               <img src={this.props.img}/>
-              <h5>{this.props.ingredientsNum} Ingredients</h5>
             </div>
+            <h5>{this.props.ingredientsNum} <i className="fa fa-list" aria-hidden="true"></i></h5>
           </div>
         </a>
       </section>
@@ -221,19 +222,25 @@ class Main extends React.Component {
 
   render() {
     localStorage.setItem('recipes', JSON.stringify(this.state.recipes));
-    var addReiceBtn = <button onClick={this.newRecipe}>Add Recipe</button>
+    var addReiceBtn = (
+      <div className='main-add-btn' style={!this.state.recipes.length ? {width: 200, height: 75} : {}}>
+        <button onClick={this.newRecipe} class='add-recipe-btn'>
+          Add <i className="fa fa-cutlery" aria-hidden="true"/>
+        </button>
+      </div>
+    );
     if (!this.state.recipes.length) { return( // sane as (.length === 0)
       <div>
       <section className="main">
-
+        {addReiceBtn}
       </section>
-      {addReiceBtn}
+
     </div>
     )};
 
     var objNum = this.state.focusedRecipeNum;
 
-    var mapedRecepies = this.state.recipes.map((x, i) =>
+    var mapedRecipes = this.state.recipes.map((x, i) =>
       <Recipe
         focusOn={() => this.focusOn(i)}
         name={x.name}
@@ -246,7 +253,7 @@ class Main extends React.Component {
     return(
       <div>
       <section className="main">
-      {mapedRecepies}
+      {mapedRecipes}
       { this.state.focused ?
         <Focused
           name={this.state.recipes[objNum].name}

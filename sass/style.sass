@@ -1,36 +1,61 @@
 *
  box-sizing: border-box
- // border: solid
 
 body
-  max-width: 1200px
+  max-width: 1050px
   margin: auto
 
 h1
   text-align: center
+  font-size: 35px
+  text-shadow: 0 2px rgba(0, 0, 0, 0.1)
 
 a
   color: inherit
   text-decoration: inherit
+
+button
+  cursor: pointer
 
 .app
   margin: auto
 
 .main
   display: flex
-  justify-content: space-around
+  justify-content: center
   flex-wrap: wrap
+  background: #A99F8F
+  box-shadow: 0 0 10px black
+  border-radius: 20px
+
+.main-add-btn
+  width: 120px
+  height: 60px
+  margin: 10px auto
+  button
+    background: #5F666F
+    width: 100%
+    height: 100%
+    border: solid 0
+    &:hover
+      background: #7C8188
 
 .recipe
-  border: solid red
   margin: 10px
-  width: 250px
-  height: 250px
+  width: 230px
+  height: 160px
   position: relative
+  border-radius: 10px
+  box-shadow: 0 0 10px 3px rgba(0,0,0,0.5)
+  overflow: hidden
+  background: #f3f0eb
+  &:hover
+    background: #e2dbcf
   .recipe-name
+    color: #2A3139
     font-size: 22px
     text-align: center
-    margin: 15px 0 5px 0
+    margin: 8px 10px -5px 10px
     white-space: nowrap
     overflow: hidden
     text-overflow: ellipsis
@@ -40,48 +65,46 @@ a
     color: white
     text-shadow: 0 0 2px black
     font-size: 50px
-    margin: 10%
+    margin: 12%
   img
     object-fit: cover
-    object-position: center
     height: 125px
     width: 100%
   h5
+    position: absolute
+    font-size: 15px
+    width: 25%
+    color: white
     text-align: center
+    margin: -40px 0 0 0
+    text-shadow: 0 1px rgba(0,0,0,0.5)
 
 @media screen and (max-width: 750px)
   .recipe
     width: 155px
-    height: 130px
+    height: 120px
+    .recipe-name
+      font-size: 18px
     img
-      object-fit: cover
-      object-position: center
-      height: 65px
-      width: 100%
+      margin-top: -5px
+      height: 85px
     h5
-      display: none
-
-.recipe-del-btn
-  position: relative
-  top: -50px
-  margin-bottom: -50px
-  right: -50%
-  transform: translate(-50%, 0)
-  width: 100px
+      margin: -30px 0 0 0
+  .focused-main
+    top: 0
 
 .focused-main
   z-index: 100
-  background: lightblue
+  background: #A0A3A8
   padding: 15px 15px 7px 15px
-  border: solid
   border-radius: 10px
-  min-height: 300px
-  max-width: 350px
+  max-width: 300px
   position: fixed
   left: 0
   right: 0
   margin: auto
   h2
+    font-size: 30px
     margin: 5px
     text-align: center
     padding: 5px
@@ -93,27 +116,65 @@ a
       flex: 1
       overflow: hidden
       padding: 5px
+      white-space: nowrap
+      overflow: hidden
+      text-overflow: ellipsis
+      width: 90%
+      margin: 5px auto 8px auto
   button
     border-radius: 7px
-    margin: 2px
   .bottom-btns
-    margin: 12px 0 0 0
+    margin: 10px 0
     display: flex
-    justify-content: space-between
+    justify-content: center
+    button
+      width: 80px
+      height: 30px
+      border: none
+      margin: 0 20px
+    .focused-done
+      background: #D8D8DA
+  .focused-edit
+    width: 80px
+    margin: auto
+    margin-top: 8px
+    button
+      background: #5B7857
+      border: none
+      width: 80px
+      height: 30px
+  .focused-delete
+    background: #90696B
+    border: none
   ul
     padding: 0
-  li
-    margin: 5px
-    display: flex
-    list-style: decimal
-    input
-      flex: 1
-      margin-left: 5px
-    .ingrd
-      margin-left: 5px
-      padding: 3.5px
-      flex: 1
-
+    margin: 8px 0 20px 0
+    .focused-add-ingrd
+      width: 100px
+      height: 30px
+      margin: auto
+      button
+        width: 100%
+        height: 100%
+        border: none
+        background: #80858F
+    li
+      margin: 5px 5px 5px 10px
+      display: flex
+      list-style-type: circle !important
+      .ingrd
+        margin-left: 5px
+        padding: 3.5px
+        flex: 1
+        border-radius: 5px
+      .focused-remove-ingrd
+        padding: 0 10px
+        text-align: center
+        margin-left: 3.5px
+        border: none
+        background: #80858F
+        &:hover
+          background: #90696B
 
 .focus-out
   z-index: 99

@@ -3,15 +3,20 @@
   box-sizing: border-box; }
 
 body {
-  max-width: 1200px;
+  max-width: 1050px;
   margin: auto; }
 
 h1 {
-  text-align: center; }
+  text-align: center;
+  font-size: 35px;
+  text-shadow: 0 2px rgba(0, 0, 0, 0.1); }
 
 a {
   color: inherit;
   text-decoration: inherit; }
+
+button {
+  cursor: pointer; }
 
 .app {
   margin: auto; }
@@ -21,23 +26,47 @@ a {
   display: -webkit-flex;
   display: -ms-flexbox;
   display: flex;
-  -webkit-justify-content: space-around;
-  -ms-flex-pack: distribute;
-  justify-content: space-around;
+  -webkit-box-pack: center;
+  -webkit-justify-content: center;
+  -ms-flex-pack: center;
+  justify-content: center;
   -webkit-flex-wrap: wrap;
   -ms-flex-wrap: wrap;
-  flex-wrap: wrap; }
+  flex-wrap: wrap;
+  background: #A99F8F;
+  -webkit-box-shadow: 0 0 10px black;
+  box-shadow: 0 0 10px black;
+  border-radius: 20px; }
+
+.main-add-btn {
+  width: 120px;
+  height: 60px;
+  margin: 10px auto; }
+  .main-add-btn button {
+    background: #5F666F;
+    width: 100%;
+    height: 100%;
+    border: solid 0; }
+    .main-add-btn button:hover {
+      background: #7C8188; }
 
 .recipe {
-  border: solid red;
   margin: 10px;
-  width: 250px;
-  height: 250px;
-  position: relative; }
+  width: 230px;
+  height: 160px;
+  position: relative;
+  border-radius: 10px;
+  -webkit-box-shadow: 0 0 10px 3px rgba(0, 0, 0, 0.5);
+  box-shadow: 0 0 10px 3px rgba(0, 0, 0, 0.5);
+  overflow: hidden;
+  background: #f3f0eb; }
+  .recipe:hover {
+    background: #e2dbcf; }
   .recipe .recipe-name {
+    color: #2A3139;
     font-size: 22px;
     text-align: center;
-    margin: 15px 0 5px 0;
+    margin: 8px 10px -5px 10px;
     white-space: nowrap;
     overflow: hidden;
     -o-text-overflow: ellipsis;
@@ -48,54 +77,47 @@ a {
     color: white;
     text-shadow: 0 0 2px black;
     font-size: 50px;
-    margin: 10%; }
+    margin: 12%; }
   .recipe img {
     -o-object-fit: cover;
     object-fit: cover;
-    -o-object-position: center;
-    object-position: center;
     height: 125px;
     width: 100%; }
   .recipe h5 {
-    text-align: center; }
+    position: absolute;
+    font-size: 15px;
+    width: 25%;
+    color: white;
+    text-align: center;
+    margin: -40px 0 0 0;
+    text-shadow: 0 1px rgba(0, 0, 0, 0.5); }
 
 @media screen and (max-width: 750px) {
   .recipe {
     width: 155px;
-    height: 130px; }
+    height: 120px; }
+    .recipe .recipe-name {
+      font-size: 18px; }
     .recipe img {
-      -o-object-fit: cover;
-      object-fit: cover;
-      -o-object-position: center;
-      object-position: center;
-      height: 65px;
-      width: 100%; }
+      margin-top: -5px;
+      height: 85px; }
     .recipe h5 {
-      display: none; } }
-
-.recipe-del-btn {
-  position: relative;
-  top: -50px;
-  margin-bottom: -50px;
-  right: -50%;
-  -webkit-transform: translate(-50%, 0);
-  -ms-transform: translate(-50%, 0);
-  transform: translate(-50%, 0);
-  width: 100px; }
+      margin: -30px 0 0 0; }
+  .focused-main {
+    top: 0; } }
 
 .focused-main {
   z-index: 100;
-  background: lightblue;
+  background: #A0A3A8;
   padding: 15px 15px 7px 15px;
-  border: solid;
   border-radius: 10px;
-  min-height: 300px;
-  max-width: 350px;
+  max-width: 300px;
   position: fixed;
   left: 0;
   right: 0;
   margin: auto; }
   .focused-main h2 {
+    font-size: 30px;
     margin: 5px;
     text-align: center;
     padding: 5px;
@@ -108,42 +130,79 @@ a {
     -ms-flex: 1;
     flex: 1;
     overflow: hidden;
-    padding: 5px; }
+    padding: 5px;
+    white-space: nowrap;
+    overflow: hidden;
+    -o-text-overflow: ellipsis;
+    text-overflow: ellipsis;
+    width: 90%;
+    margin: 5px auto 8px auto; }
   .focused-main button {
-    border-radius: 7px;
-    margin: 2px; }
+    border-radius: 7px; }
   .focused-main .bottom-btns {
-    margin: 12px 0 0 0;
+    margin: 10px 0;
     display: -webkit-box;
     display: -webkit-flex;
     display: -ms-flexbox;
     display: flex;
-    -webkit-box-pack: justify;
-    -webkit-justify-content: space-between;
-    -ms-flex-pack: justify;
-    justify-content: space-between; }
+    -webkit-box-pack: center;
+    -webkit-justify-content: center;
+    -ms-flex-pack: center;
+    justify-content: center; }
+    .focused-main .bottom-btns button {
+      width: 80px;
+      height: 30px;
+      border: none;
+      margin: 0 20px; }
+    .focused-main .bottom-btns .focused-done {
+      background: #D8D8DA; }
+  .focused-main .focused-edit {
+    width: 80px;
+    margin: auto;
+    margin-top: 8px; }
+    .focused-main .focused-edit button {
+      background: #5B7857;
+      border: none;
+      width: 80px;
+      height: 30px; }
+  .focused-main .focused-delete {
+    background: #90696B;
+    border: none; }
   .focused-main ul {
-    padding: 0; }
-  .focused-main li {
-    margin: 5px;
-    display: -webkit-box;
-    display: -webkit-flex;
-    display: -ms-flexbox;
-    display: flex;
-    list-style: decimal; }
-    .focused-main li input {
-      -webkit-box-flex: 1;
-      -webkit-flex: 1;
-      -ms-flex: 1;
-      flex: 1;
-      margin-left: 5px; }
-    .focused-main li .ingrd {
-      margin-left: 5px;
-      padding: 3.5px;
-      -webkit-box-flex: 1;
-      -webkit-flex: 1;
-      -ms-flex: 1;
-      flex: 1; }
+    padding: 0;
+    margin: 8px 0 20px 0; }
+    .focused-main ul .focused-add-ingrd {
+      width: 100px;
+      height: 30px;
+      margin: auto; }
+      .focused-main ul .focused-add-ingrd button {
+        width: 100%;
+        height: 100%;
+        border: none;
+        background: #80858F; }
+    .focused-main ul li {
+      margin: 5px 5px 5px 10px;
+      display: -webkit-box;
+      display: -webkit-flex;
+      display: -ms-flexbox;
+      display: flex;
+      list-style-type: circle !important; }
+      .focused-main ul li .ingrd {
+        margin-left: 5px;
+        padding: 3.5px;
+        -webkit-box-flex: 1;
+        -webkit-flex: 1;
+        -ms-flex: 1;
+        flex: 1;
+        border-radius: 5px; }
+      .focused-main ul li .focused-remove-ingrd {
+        padding: 0 10px;
+        text-align: center;
+        margin-left: 3.5px;
+        border: none;
+        background: #80858F; }
+        .focused-main ul li .focused-remove-ingrd:hover {
+          background: #90696B; }
 
 .focus-out {
   z-index: 99;

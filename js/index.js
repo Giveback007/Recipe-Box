@@ -8,23 +8,23 @@ function _possibleConstructorReturn(self, call) { if (!self) { throw new Referen
 
 function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
 
-var editableColor = 'white';
+var editableColor = '#D9DADC';
 var foodDefaultUrl = 'https://s3-us-west-2.amazonaws.com/s.cdpn.io/1134440/food-default.jpeg';
 var recipesPreMade = [{
   'name': 'Roasted Chicken',
-  'ingredients': ['blah blah', 'stuff', 'more stuff'],
+  'ingredients': ['roasting chicken', '2 tspns of olive oil', '3/4 tspns of salt', '1/4 tspns of black pepper', '2 garlic cloves', '1 lemon'],
   'img': 'https://s3-us-west-2.amazonaws.com/s.cdpn.io/1134440/roasted-chicken2.jpg'
 }, {
-  'name': 'Pumkin Pie',
-  'ingredients': ['blah bluh', 'damb it', 'less stuff'],
+  'name': 'Pumpkin Pie',
+  'ingredients': ['pie crust', '2 eggs', '1/3 cup of vegetable oil', '1/2 cup of sugar', '1 cup of flour', '1 can of pumpkin'],
   'img': 'https://s3-us-west-2.amazonaws.com/s.cdpn.io/1134440/pumkin-pie.jpg'
 }, {
   'name': 'Grilled Cheese Sandwich',
-  'ingredients': ['could you blah', 'stuffiness', 'more stuffiness'],
+  'ingredients': ['bread', 'cheese', '1 tbls of butter'],
   'img': 'https://s3-us-west-2.amazonaws.com/s.cdpn.io/1134440/grilled-cheese-sandwich2.jpg'
 }];
 
-localStorage.clear(); // remove this
+// localStorage.clear(); // remove this
 
 function Outer(props) {
   return React.createElement('div', { className: 'focus-out', onClick: props.onClick, style: props.onOff ? {} : { display: 'none' } });
@@ -38,16 +38,6 @@ var Focused = function (_React$Component) {
 
     var _this = _possibleConstructorReturn(this, (Focused.__proto__ || Object.getPrototypeOf(Focused)).call(this, props));
 
-    _this.done = function () {
-      _this.saveRecipe();
-      _this.props.done();
-    };
-
-    _this.delete = function () {
-      _this.props.delete();
-      _this.props.done();
-    };
-
     _this.state = {
       name: _this.props.name,
       ingredients: _this.props.ingredients,
@@ -58,6 +48,8 @@ var Focused = function (_React$Component) {
     _this.removeIngrd = _this.removeIngrd.bind(_this);
     _this.addIngrd = _this.addIngrd.bind(_this);
     _this.saveRecipe = _this.saveRecipe.bind(_this);
+    _this.done = _this.done.bind(_this);
+    _this.delete = _this.delete.bind(_this);
     return _this;
   }
 
@@ -100,6 +92,18 @@ var Focused = function (_React$Component) {
       this.props.update(focusedName, tempIngrdArr, img);
     }
   }, {
+    key: 'done',
+    value: function done() {
+      this.saveRecipe();
+      this.props.done();
+    }
+  }, {
+    key: 'delete',
+    value: function _delete() {
+      this.props.delete();
+      this.props.done();
+    }
+  }, {
     key: 'render',
     value: function render() {
       var _this2 = this;
@@ -109,13 +113,6 @@ var Focused = function (_React$Component) {
           'li',
           { key: i, className: 'ingrd-parent' },
           React.createElement(
-            'button',
-            { style: _this2.state.editable ? {} : { display: 'none' }, onClick: function onClick() {
-                return _this2.removeIngrd(i);
-              } },
-            'x'
-          ),
-          React.createElement(
             'span',
             {
               contentEditable: _this2.state.editable ? 'true' : 'false',
@@ -123,6 +120,13 @@ var Focused = function (_React$Component) {
               className: 'ingrd'
             },
             x
+          ),
+          React.createElement(
+            'button',
+            { className: 'focused-remove-ingrd', style: _this2.state.editable ? {} : { display: 'none' }, onClick: function onClick() {
+                return _this2.removeIngrd(i);
+              } },
+            'x'
           )
         );
       });
@@ -139,29 +143,44 @@ var Focused = function (_React$Component) {
           this.state.name
         ),
         React.createElement(
+          'div',
+          { className: 'focused-edit' },
+          React.createElement(
+            'button',
+            { onClick: this.toggleEdit },
+            this.state.editable ? 'Save' : 'Edit'
+          )
+        ),
+        React.createElement(
           'ul',
           null,
           ingrList,
           this.state.editable ? React.createElement(
-            'button',
-            { onClick: this.addIngrd },
-            'add ingredients'
+            'div',
+            { className: 'focused-add-ingrd' },
+            React.createElement(
+              'button',
+              { onClick: this.addIngrd },
+              React.createElement('i', { className: 'fa fa-plus', 'aria-hidden': 'true' }),
+              ' ',
+              React.createElement('i', { className: 'fa fa-list-ul', 'aria-hidden': 'true' })
+            )
           ) : null
         ),
         React.createElement(
           'div',
-          { className: 'img-url-parrent' },
+          { className: 'img-url-parrent', style: this.state.editable ? {} : { display: 'none' } },
           React.createElement(
             'h5',
             null,
-            'Img Url: '
+            'Img: '
           ),
           React.createElement(
             'div',
             {
               id: 'imgUrl',
               contentEditable: this.state.editable ? 'true' : 'false',
-              style: { background: this.state.editable ? editableColor : '' }
+              style: this.state.editable ? { background: editableColor } : {}
             },
             this.state.img
           )
@@ -171,17 +190,12 @@ var Focused = function (_React$Component) {
           { className: 'bottom-btns' },
           React.createElement(
             'button',
-            { onClick: this.toggleEdit, style: { width: '60px' } },
-            this.state.editable ? 'Save' : 'Edit'
-          ),
-          React.createElement(
-            'button',
-            { onClick: this.done },
+            { className: 'focused-done', onClick: this.done },
             'Done'
           ),
           React.createElement(
             'button',
-            { onClick: this.delete },
+            { className: 'focused-delete', onClick: this.delete },
             'Delete'
           )
         )
@@ -243,13 +257,14 @@ var Recipe = function (_React$Component2) {
               'div',
               null,
               React.createElement('i', { className: 'fa fa-pencil-square-o fontawesome', 'aria-hidden': 'true', style: this.state.hover ? {} : { display: 'none' } }),
-              React.createElement('img', { src: this.props.img }),
-              React.createElement(
-                'h5',
-                null,
-                this.props.ingredientsNum,
-                ' Ingredients'
-              )
+              React.createElement('img', { src: this.props.img })
+            ),
+            React.createElement(
+              'h5',
+              null,
+              this.props.ingredientsNum,
+              ' ',
+              React.createElement('i', { className: 'fa fa-list', 'aria-hidden': 'true' })
             )
           )
         )
@@ -336,24 +351,32 @@ var Main = function (_React$Component3) {
 
       localStorage.setItem('recipes', JSON.stringify(this.state.recipes));
       var addReiceBtn = React.createElement(
-        'button',
-        { onClick: this.newRecipe },
-        'Add Recipe'
+        'div',
+        { className: 'main-add-btn', style: !this.state.recipes.length ? { width: 200, height: 75 } : {} },
+        React.createElement(
+          'button',
+          { onClick: this.newRecipe, 'class': 'add-recipe-btn' },
+          'Add ',
+          React.createElement('i', { className: 'fa fa-cutlery', 'aria-hidden': 'true' })
+        )
       );
       if (!this.state.recipes.length) {
         return (// sane as (.length === 0)
           React.createElement(
             'div',
             null,
-            React.createElement('section', { className: 'main' }),
-            addReiceBtn
+            React.createElement(
+              'section',
+              { className: 'main' },
+              addReiceBtn
+            )
           )
         );
       };
 
       var objNum = this.state.focusedRecipeNum;
 
-      var mapedRecepies = this.state.recipes.map(function (x, i) {
+      var mapedRecipes = this.state.recipes.map(function (x, i) {
         return React.createElement(Recipe, {
           focusOn: function focusOn() {
             return _this6.focusOn(i);
@@ -373,7 +396,7 @@ var Main = function (_React$Component3) {
         React.createElement(
           'section',
           { className: 'main' },
-          mapedRecepies,
+          mapedRecipes,
           this.state.focused ? React.createElement(Focused, {
             name: this.state.recipes[objNum].name,
             ingredients: this.state.recipes[objNum].ingredients,
